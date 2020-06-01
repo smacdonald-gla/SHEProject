@@ -61,7 +61,7 @@
     <Compile Include="src\pages\CartSummary.cs" />
     <Compile Include="src\pages\LoginPage.cs" />
     <Compile Include="src\pages\MainPage.cs" />
-    <Compile Include="Test\scripts\FirstTest.cs" />
+    <Compile Include="Test\scripts\SHETest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
