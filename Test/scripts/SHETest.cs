@@ -8,32 +8,31 @@ using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SHETest
 {
     class SHETest
     {
  
-        string loginEmail = "d1474341@urhen.com";
-        string loginPassword = "Password";
-        string LoginButtonLocator = "//a[@class='login']";
-        string SubmitLoginButtonLocator = "//button[@id='SubmitLogin']";
-        string loginEmailFormLocator = "//input[@id='email']";
-        string loginPassFormLocator = "//input[@id='passwd']";
-        string dressesCategoryLocator = "//ul[contains(@class,'sf-menu')]//a[@title='Dresses'and not(ancestor::ul[contains(@class,'submenu-container')])]";
-        string summerDressesCategoryLocator = "//div[@class='subcategory-image']/a[@title='Summer Dresses']";
-        string dressImageLocator = "//a[@class='product_img_link']";
-        string dressQuickViewLocator = "//li[contains(@class,'hovered')]//a[@class='quick-view']";
-        string iframeLocator = "//iframe[@class='fancybox-iframe']";
-        string addToCartButtonLocator = "//button[@class='exclusive']";
-        string addedToCartSuccessfulLocator = "//i[@class='icon-ok']";
-        string continueShoppingButtonLocator = "//span[contains(@class,'continue')]";
-        string checkoutButtonLocator = "//a[@title='Proceed to checkout']";
-        string accountInfoLocator = "//*[@title='Information']";
-        string summerDressesDescLocator = "//div[@class='cat_desc']//span[(contains(.,'Summer Dresses'))]";
-        string deleteItemFromBasketLocator = "//a[@title='Delete']";
-        string logoutButtonLocator = "//a[@class='logout']";
+        readonly string loginEmail = "d1474341@urhen.com";
+        readonly string loginPassword = "Password";
+        readonly string LoginButtonLocator = "//a[@class='login']";
+        readonly string SubmitLoginButtonLocator = "//button[@id='SubmitLogin']";
+        readonly string loginEmailFormLocator = "//input[@id='email']";
+        readonly string loginPassFormLocator = "//input[@id='passwd']";
+        readonly string dressesCategoryLocator = "//ul[contains(@class,'sf-menu')]//a[@title='Dresses'and not(ancestor::ul[contains(@class,'submenu-container')])]";
+        readonly string summerDressesCategoryLocator = "//div[@class='subcategory-image']/a[@title='Summer Dresses']";
+        readonly string dressImageLocator = "//a[@class='product_img_link']";
+        readonly string dressQuickViewLocator = "//li[contains(@class,'hovered')]//a[@class='quick-view']";
+        readonly string iframeLocator = "//iframe[@class='fancybox-iframe']";
+        readonly string addToCartButtonLocator = "//button[@class='exclusive']";
+        readonly string addedToCartSuccessfulLocator = "//i[@class='icon-ok']";
+        readonly string continueShoppingButtonLocator = "//span[contains(@class,'continue')]";
+        readonly string checkoutButtonLocator = "//a[@title='Proceed to checkout']";
+        readonly string accountInfoLocator = "//*[@title='Information']";
+        readonly string summerDressesDescLocator = "//div[@class='cat_desc']//span[(contains(.,'Summer Dresses'))]";
+        readonly string deleteItemFromBasketLocator = "//a[@title='Delete']";
+        readonly string logoutButtonLocator = "//a[@class='logout']";
 
 
         IWebDriver driver = new FirefoxDriver();
@@ -43,7 +42,7 @@ namespace SHETest
         public void Test()
         {
             driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(2);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1);
             driver.Url = "http://automationpractice.com/index.php";
 
             //login to site 
