@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
@@ -24,7 +20,6 @@ namespace SHEProject
         readonly string continueShoppingButtonLocator = "//span[contains(@class,'continue')]";
         readonly string checkoutButtonLocator = "//a[@title='Proceed to checkout']";
         private IWebDriver driver;
-        private WebDriverWait wait;
 
         public ShoppingPage(IWebDriver driver)
         {
@@ -44,22 +39,39 @@ namespace SHEProject
             summerDressesCategoryLink.Click();
         }
 
+        public bool IsSummerDressesDescVisible()
+        {
+            return driver.FindElement(By.XPath(summerDressesDescLocator)).Displayed;
+        }
+
+        ///<Summary>
+        ///Selects the Quick View option for the requested item in list of products
+        ///</Summary> 
         public void QuickViewDress(int itemNumber)
         {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             IWebElement dress = driver.FindElements(By.XPath(dressImageLocator))[--itemNumber];
-            //wait.Until(ExpectedConditions.ElementToBeClickable(dress));
+            wait.Until(ExpectedConditions.ElementToBeClickable(dress));
             Actions firstAction = new Actions(driver);
             firstAction.MoveToElement(dress).Build().Perform();
             IWebElement dressQuickView = driver.FindElement(By.XPath(dressQuickViewLocator));
-            //wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(dressQuickViewLocator)));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(dressQuickViewLocator)));
             dressQuickView.Click();
+        }
+
+        public bool IsAddToCartButtonVisible()
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+            IWebElement iframeElement = driver.FindElement(By.XPath(iframeLocator));
+            wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(iframeLocator)));
+            driver.SwitchTo().Frame(iframeElement);
+            return driver.FindElement(By.XPath(addToCartButtonLocator)).Displayed;
         }
 
         public void AddToCart()
         {
-            IWebElement iframeElement = driver.FindElement(By.XPath(iframeLocator));
-            //wait.Until(ExpectedConditions.ElementIsVisible(By.XPath(iframeLocator)));
-            driver.SwitchTo().Frame(iframeElement);
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
+
             IWebElement addToCartButton = driver.FindElement(By.XPath(addToCartButtonLocator));
             addToCartButton.Click();
             driver.SwitchTo().DefaultContent();

@@ -2,91 +2,32 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using SHEProject;
 using SHEProject.src.pages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 
 
 namespace SHETest
 {
-    class SHETest
+    [TestFixture(typeof(ChromeDriver))]
+    [TestFixture(typeof(FirefoxDriver))]
+
+    class SHETest<TWebDriver> where TWebDriver : IWebDriver, new()
     {
         readonly string loginEmail = "d1474341@urhen.com";
         readonly string loginPassword = "Password";
         readonly string homeURL = "http://automationpractice.com/index.php";
+        private IWebDriver driver;
 
-
-
-
-        [Test]
-        public void FirefoxTest()
+        [SetUp]
+        public void CreateDriver()
         {
-            IWebDriver driver = new FirefoxDriver();
-            driver.Manage().Window.Maximize();
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1);
-            driver.Url = homeURL;
-
-            //login to site
-            HomePage home_page = new HomePage(driver);
-            home_page.clickLogin();
-
-            LoginPage login_page = new LoginPage(driver);
-            login_page.UserLogin(loginEmail, loginPassword);
-            //Assert.IsTrue(driver.FindElement(By.XPath(accountInfoLocator)).Displayed);
-
-            //select Dresses->Summer Dresses
-            ShoppingPage shopping_page = new ShoppingPage(driver);
-            shopping_page.SelectDressCategory();
-            shopping_page.SelectSummerDressCategory();
-            //Assert.IsTrue(driver.FindElement(By.XPath(summerDressesDescLocator)).Displayed);
-
-            //Quick-View a dress
-            shopping_page.QuickViewDress(1);
-            //Assert.IsTrue(driver.FindElement(By.XPath(addToCartButtonLocator)).Displayed);
-
-            //add dress to cart
-            shopping_page.AddToCart();
-            //Assert.IsTrue(driver.FindElement(By.XPath(addedToCartSuccessfulLocator)).Displayed);
-
-            //add another dress to cart
-            shopping_page.ClickContinueShoppingButton();
-
-            shopping_page.QuickViewDress(3);
-            shopping_page.AddToCart();
-            //Assert.IsTrue(driver.FindElement(By.XPath(addedToCartSuccessfulLocator)).Displayed);
-
-            //go to checkout
-            shopping_page.ClickCheckoutButton();
-
-            //verify correct dress is selected on summary page
-            Assert.IsTrue(driver.FindElement(By.XPath("//small[contains(text(),'SKU : demo_5')]")).Displayed);
-            Assert.IsTrue(driver.FindElement(By.XPath("//small[contains(text(),'SKU : demo_7')]")).Displayed);
-
-            //remove 2nd dress from cart
-            CartSummaryPage cart_summary_page = new CartSummaryPage(driver);
-            cart_summary_page.RemoveItemFromCart(2);
-
-            //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//small[contains(text(),'SKU : demo_7')]")));
-            
-            Assert.IsTrue(cart_summary_page.ReturnSizeOfBasket() == 1);
-            Assert.IsTrue(driver.FindElement(By.XPath("//small[contains(text(),'SKU : demo_5')]")).Displayed);
-
-            //sign out
-            home_page.clickLogout();
-            //Assert.IsTrue(driver.FindElement(By.XPath(LoginButtonLocator)).Displayed);
-
-            driver.Close();
+            this.driver = new TWebDriver();
         }
 
         [Test]
-        public void ChromeTest()
+        public void Test()
         {
-            IWebDriver driver = new ChromeDriver();
             driver.Manage().Window.Maximize();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(1);
             driver.Url = homeURL;
@@ -94,51 +35,47 @@ namespace SHETest
             //login to site
             HomePage home_page = new HomePage(driver);
             home_page.clickLogin();
-
             LoginPage login_page = new LoginPage(driver);
             login_page.UserLogin(loginEmail, loginPassword);
-            //Assert.IsTrue(driver.FindElement(By.XPath(accountInfoLocator)).Displayed);
+            Assert.IsTrue(login_page.IsAccountInfoVisible());
 
-            //select Dresses->Summer Dresses
+            //Navigate to Summer Dresses category
             ShoppingPage shopping_page = new ShoppingPage(driver);
             shopping_page.SelectDressCategory();
             shopping_page.SelectSummerDressCategory();
-            //Assert.IsTrue(driver.FindElement(By.XPath(summerDressesDescLocator)).Displayed);
+            Assert.IsTrue(shopping_page.IsSummerDressesDescVisible());
 
             //Quick-View a dress
             shopping_page.QuickViewDress(1);
-            //Assert.IsTrue(driver.FindElement(By.XPath(addToCartButtonLocator)).Displayed);
+            Assert.IsTrue(shopping_page.IsAddToCartButtonVisible());
 
-            //add dress to cart
+            //Add first dress to cart
             shopping_page.AddToCart();
-            //Assert.IsTrue(driver.FindElement(By.XPath(addedToCartSuccessfulLocator)).Displayed);
 
-            //add another dress to cart
+            //Add second dress to cart
             shopping_page.ClickContinueShoppingButton();
-
             shopping_page.QuickViewDress(3);
+            Assert.IsTrue(shopping_page.IsAddToCartButtonVisible());
             shopping_page.AddToCart();
-            //Assert.IsTrue(driver.FindElement(By.XPath(addedToCartSuccessfulLocator)).Displayed);
 
             //go to checkout
             shopping_page.ClickCheckoutButton();
 
             //verify correct dress is selected on summary page
-            Assert.IsTrue(driver.FindElement(By.XPath("//small[contains(text(),'SKU : demo_5')]")).Displayed);
-            Assert.IsTrue(driver.FindElement(By.XPath("//small[contains(text(),'SKU : demo_7')]")).Displayed);
+            CartSummaryPage cart_summary_page = new CartSummaryPage(driver);
+            Assert.IsTrue(cart_summary_page.IsItemPresentInBasket("demo_5"));
+            Assert.IsTrue(cart_summary_page.IsItemPresentInBasket("demo_7"));
 
             //remove 2nd dress from cart
-            CartSummaryPage cart_summary_page = new CartSummaryPage(driver);
-            cart_summary_page.RemoveItemFromCart(2);
+            cart_summary_page.RemoveItemFromCart("demo_7");
 
-            //wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//small[contains(text(),'SKU : demo_7')]")));
-
+            //Check that only the first dress is remaining in the basket
             Assert.IsTrue(cart_summary_page.ReturnSizeOfBasket() == 1);
-            Assert.IsTrue(driver.FindElement(By.XPath("//small[contains(text(),'SKU : demo_5')]")).Displayed);
+            Assert.IsTrue(cart_summary_page.IsItemPresentInBasket("demo_5"));
 
             //sign out
             home_page.clickLogout();
-            //Assert.IsTrue(driver.FindElement(By.XPath(LoginButtonLocator)).Displayed);
+            Assert.IsTrue(home_page.IsLoginButtonVisible());
 
             driver.Close();
         }

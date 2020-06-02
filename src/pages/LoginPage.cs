@@ -22,7 +22,6 @@ namespace SHEProject
 
         public void UserLogin(string user, string pass)
         {
-
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
             IWebElement submitLoginButton = driver.FindElement(By.XPath(SubmitLoginButtonLocator));
             wait.Until(ExpectedConditions.ElementToBeClickable(submitLoginButton));
@@ -31,6 +30,11 @@ namespace SHEProject
             loginEmailForm.SendKeys(user);
             loginPassForm.SendKeys(pass);
             submitLoginButton.Click();
+        }
+
+        public bool IsAccountInfoVisible()
+        {
+            return driver.FindElement(By.XPath(accountInfoLocator)).Displayed;
         }
 
     }
