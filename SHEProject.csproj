@@ -58,9 +58,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\pages\CartSummary.cs" />
+    <Compile Include="src\pages\CartSummaryPage.cs" />
     <Compile Include="src\pages\LoginPage.cs" />
-    <Compile Include="src\pages\MainPage.cs" />
+    <Compile Include="src\pages\ShoppingPage.cs" />
     <Compile Include="Test\scripts\SHETest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
