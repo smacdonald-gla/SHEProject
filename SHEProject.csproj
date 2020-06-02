@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\pages\CartSummaryPage.cs" />
+    <Compile Include="src\pages\HomePage.cs" />
     <Compile Include="src\pages\LoginPage.cs" />
     <Compile Include="src\pages\ShoppingPage.cs" />
     <Compile Include="Test\scripts\SHETest.cs" />
