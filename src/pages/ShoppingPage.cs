@@ -16,7 +16,6 @@ namespace SHEProject
         readonly string dressQuickViewLocator = "//li[contains(@class,'hovered')]//a[@class='quick-view']";
         readonly string iframeLocator = "//iframe[@class='fancybox-iframe']";
         readonly string addToCartButtonLocator = "//button[@class='exclusive']";
-        readonly string addedToCartSuccessfulLocator = "//i[@class='icon-ok']";
         readonly string continueShoppingButtonLocator = "//span[contains(@class,'continue')]";
         readonly string checkoutButtonLocator = "//a[@title='Proceed to checkout']";
         private IWebDriver driver;
@@ -39,7 +38,7 @@ namespace SHEProject
             summerDressesCategoryLink.Click();
         }
 
-        public bool IsSummerDressesDescVisible()
+         public bool IsSummerDressesDescVisible()
         {
             return driver.FindElement(By.XPath(summerDressesDescLocator)).Displayed;
         }
@@ -68,10 +67,12 @@ namespace SHEProject
             return driver.FindElement(By.XPath(addToCartButtonLocator)).Displayed;
         }
 
-        public void AddToCart()
+        /// <summary>
+        /// Adds currently open Quick-View item to shopping cart
+        /// </summary>
+        public void QuickViewAddToCart()
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-
             IWebElement addToCartButton = driver.FindElement(By.XPath(addToCartButtonLocator));
             addToCartButton.Click();
             driver.SwitchTo().DefaultContent();

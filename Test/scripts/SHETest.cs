@@ -36,7 +36,7 @@ namespace SHETest
             HomePage home_page = new HomePage(driver);
             home_page.clickLogin();
             LoginPage login_page = new LoginPage(driver);
-            login_page.UserLogin(loginEmail, loginPassword);
+            login_page.LoginUser(loginEmail, loginPassword);
             Assert.IsTrue(login_page.IsAccountInfoVisible());
 
             //Navigate to Summer Dresses category
@@ -50,13 +50,13 @@ namespace SHETest
             Assert.IsTrue(shopping_page.IsAddToCartButtonVisible());
 
             //Add first dress to cart
-            shopping_page.AddToCart();
+            shopping_page.QuickViewAddToCart();
 
             //Add second dress to cart
             shopping_page.ClickContinueShoppingButton();
             shopping_page.QuickViewDress(3);
             Assert.IsTrue(shopping_page.IsAddToCartButtonVisible());
-            shopping_page.AddToCart();
+            shopping_page.QuickViewAddToCart();
 
             //go to checkout
             shopping_page.ClickCheckoutButton();

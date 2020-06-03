@@ -20,6 +20,10 @@ namespace SHEProject
             PageFactory.InitElements(driver, this);
         }
 
+        /// <summary>
+        /// Searches the current Shopping Cart list and removes requested item
+        /// </summary>
+        /// <param name="item">String identifier for requested item to be deleted eg. "demo_6</param>
         public void RemoveItemFromCart (string item)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
@@ -37,8 +41,7 @@ namespace SHEProject
                         --i;
                     }
                 }
-            } 
-            
+            }
             wait.Until(ExpectedConditions.InvisibilityOfElementLocated(By.XPath("//small[contains(text(),'"+item+"')]")));
         }
 
